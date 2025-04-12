@@ -62,7 +62,7 @@ class LibraryPageContent extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: SizedBox(
-                  height: 180,
+                  height: 220,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: state.recentSongs.length,
@@ -92,7 +92,7 @@ class LibraryPageContent extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: SizedBox(
-                  height: 220,
+                  height: 260,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: state.playlists.length + 1,
