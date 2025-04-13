@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:musiva/features/profile/presentation/pages/profile_page.dart';
 import '../../../library/presentation/pages/library_page.dart';
 import '../../../songs/presentation/pages/songs_page.dart';
 import '../bloc/navigation_bloc.dart';
@@ -56,6 +57,10 @@ class HomePageContent extends StatelessWidget {
                 icon: Icon(Icons.library_music),
                 label: 'Library',
               ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: "Profile",
+              ),
             ],
             selectedItemColor: Theme.of(context).primaryColor,
             elevation: 8.0,
@@ -71,6 +76,8 @@ class HomePageContent extends StatelessWidget {
         return 'Songs';
       case 1:
         return 'Library';
+      case 2:
+        return 'Profile';
       default:
         return 'Musiva';
     }
@@ -82,6 +89,8 @@ class HomePageContent extends StatelessWidget {
         return const SongsPage();
       case 1:
         return const LibraryPage();
+      case 2:
+        return const ProfilePage();
       default:
         return const SongsPage();
     }
