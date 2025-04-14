@@ -86,13 +86,13 @@ class HomePageContent extends StatelessWidget {
   Widget _buildPage(int index) {
     switch (index) {
       case 0:
-        return const SongsPage();
+        return SongsPage();
       case 1:
         return const LibraryPage();
       case 2:
         return const ProfilePage();
       default:
-        return const SongsPage();
+        return SongsPage();
     }
   }
 }

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../bloc/songs_bloc.dart';
 import '../widgets/featured_carousel.dart';
 import '../widgets/song_list_item.dart';
 import '../widgets/category_selector.dart';
 
 class SongsPage extends StatelessWidget {
-  const SongsPage({super.key});
+  SongsPage({super.key});
+
+  final sl = GetIt.instance;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SongsBloc()..add(const FetchSongs()),
+      create: (_) => sl<SongsBloc>()..add(const FetchSongs()),
       child: const SongsPageContent(),
     );
   }

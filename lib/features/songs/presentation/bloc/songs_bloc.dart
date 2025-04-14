@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,9 +13,11 @@ part 'songs_state.dart';
 
 class SongsBloc extends Bloc<SongsEvent, SongsState> {
   // TODO: Change from creating instance here to inject it
-  final SongsRepository _songsRepository = SongsRepositoryImpl();
+  final SongsRepository songsRepository;
 
-  SongsBloc() : super(const SongsState()) {
+
+
+  SongsBloc({required this.songsRepository}) : super(const SongsState()) {
     on<FetchSongs>(_onFetchSongs);
     on<CategorySelected>(_onCategorySelected);
   }
@@ -22,8 +26,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     emit(state.copyWith(status: SongsStatus.loading));
 
     try {
-      final songs = await _songsRepository.getSongs();
-      final featuredSongs = await _songsRepository.getFeaturedSongs();
+      final songs = await songsRepository.getSongs();
+      final featuredSongs = await songsRepository.getFeaturedSongs();
 
       emit(state.copyWith(
         status: SongsStatus.success,
