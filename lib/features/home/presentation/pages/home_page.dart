@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiva/features/profile/presentation/pages/profile_page.dart';
+import 'package:musiva/features/song_upload/presentation/bloc/song_upload_bloc.dart';
+import 'package:musiva/features/song_upload/presentation/pages/upload_page.dart';
 import '../../../library/presentation/pages/library_page.dart';
 import '../../../songs/presentation/pages/songs_page.dart';
 import '../bloc/navigation_bloc.dart';
@@ -58,6 +60,10 @@ class HomePageContent extends StatelessWidget {
                 label: 'Library',
               ),
               BottomNavigationBarItem(
+                icon: Icon(Icons.cloud_upload),
+                label: 'Upload',
+              ),
+              BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: "Profile",
               ),
@@ -77,6 +83,8 @@ class HomePageContent extends StatelessWidget {
       case 1:
         return 'Library';
       case 2:
+        return 'Upload';
+      case 3:
         return 'Profile';
       default:
         return 'Musiva';
@@ -90,6 +98,8 @@ class HomePageContent extends StatelessWidget {
       case 1:
         return const LibraryPage();
       case 2:
+        return UploadSongPage();
+      case 3:
         return const ProfilePage();
       default:
         return SongsPage();

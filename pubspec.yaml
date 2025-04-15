@@ -22,6 +22,12 @@ dependencies:
   firebase_core: ^3.13.0
   dio: ^5.8.0+1
   envied: ^1.1.1
+  uuid: ^4.5.1
+  path: ^1.9.0
+  cloudinary_public: ^0.23.1
+  just_audio: ^0.9.46
+  cloudinary_url_gen: ^1.7.0
+  file_picker: ^10.1.2
 
 dev_dependencies:
   flutter_test:

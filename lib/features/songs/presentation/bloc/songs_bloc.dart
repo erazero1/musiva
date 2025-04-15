@@ -12,7 +12,6 @@ part 'songs_event.dart';
 part 'songs_state.dart';
 
 class SongsBloc extends Bloc<SongsEvent, SongsState> {
-  // TODO: Change from creating instance here to inject it
   final SongsRepository songsRepository;
 
 

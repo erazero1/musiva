@@ -6,7 +6,7 @@ import 'package:musiva/core/theme/dark_theme.dart';
 import 'package:musiva/core/theme/theme.dart';
 import 'package:musiva/features/auth/presentation/bloc/auth_bloc.dart';
 
-import 'features/auth/injection_container.dart';
+import 'core/di/service_locator.dart';
 
 class MusivaApp extends StatelessWidget {
   const MusivaApp({super.key});

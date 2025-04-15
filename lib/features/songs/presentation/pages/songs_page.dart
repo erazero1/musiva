@@ -15,7 +15,7 @@ class SongsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<SongsBloc>()..add(const FetchSongs()),
-      child: const SongsPageContent(),
+      child: SongsPageContent(),
     );
   }
 }

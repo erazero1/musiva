@@ -9,4 +9,5 @@ final class Env{
 
   @EnviedField(varName: "CLIENT_SECRET", obfuscate: true)
   static final String clientSecretKey = _Env.clientSecretKey;
+
 }
