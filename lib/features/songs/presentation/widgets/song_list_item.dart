@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/song.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SongListItem extends StatelessWidget {
   final Song song;
@@ -118,7 +119,7 @@ class SongListItem extends StatelessWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.playlist_add),
-                title: const Text('Add to playlist'),
+                title: Text(AppLocalizations.of(context)!.add_to_playlist_label),
                 onTap: () {
                   Navigator.pop(context);
                   // TODO: Add song to playlist
@@ -126,7 +127,7 @@ class SongListItem extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.favorite_border),
-                title: const Text('Add to favorites'),
+                title: Text(AppLocalizations.of(context)!.add_to_favorites_label),
                 onTap: () {
                   Navigator.pop(context);
                   // TODO: Add song to favorites
@@ -134,7 +135,7 @@ class SongListItem extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.share),
-                title: const Text('Share'),
+                title: Text(AppLocalizations.of(context)!.share_label),
                 onTap: () {
                   Navigator.pop(context);
                   // TODO: Share song
@@ -142,7 +143,7 @@ class SongListItem extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.download),
-                title: const Text('Download'),
+                title: Text(AppLocalizations.of(context)!.download_label),
                 onTap: () {
                   Navigator.pop(context);
                   // TODO: Download song

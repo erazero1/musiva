@@ -8,6 +8,6 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  setupDependencies();
+  await setupDependencies();
   runApp(MusivaApp());
 }

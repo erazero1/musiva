@@ -68,7 +68,7 @@ class MusivaAppBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // TODO: Implement settings func
+              Navigator.pushNamed(context, '/settings');
             },
           ),
         ],

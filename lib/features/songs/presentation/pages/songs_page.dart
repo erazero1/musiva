@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import '../bloc/songs_bloc.dart';
@@ -34,13 +35,13 @@ class SongsPageContent extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Failed to load songs'),
+                Text(AppLocalizations.of(context)!.failed_to_load_songs_label),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     context.read<SongsBloc>().add(const FetchSongs());
                   },
-                  child: const Text('Retry'),
+                  child: Text(AppLocalizations.of(context)!.retry_label),
                 ),
               ],
             ),
@@ -64,7 +65,12 @@ class SongsPageContent extends StatelessWidget {
               // Category selector
               SliverToBoxAdapter(
                 child: CategorySelector(
-                  categories: const ['All', 'Recent', 'Popular', 'Trending'],
+                  categories: [
+                    AppLocalizations.of(context)!.all_label,
+                    AppLocalizations.of(context)!.recent_label,
+                    AppLocalizations.of(context)!.popular_label,
+                    AppLocalizations.of(context)!.trending_label
+                  ],
                   selectedCategory: state.selectedCategory,
                   onCategorySelected: (category) {
                     context.read<SongsBloc>().add(CategorySelected(category));
@@ -77,7 +83,7 @@ class SongsPageContent extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                    (context, index) {
                       final song = state.filteredSongs[index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),

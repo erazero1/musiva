@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthForm extends StatelessWidget {
   final TextEditingController emailController;
@@ -28,7 +29,7 @@ class AuthForm extends StatelessWidget {
               child: TextFormField(
                 controller: displayNameController,
                 decoration: InputDecoration(
-                  labelText: 'Display Name',
+                  labelText: AppLocalizations.of(context)!.display_name_label,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -36,7 +37,7 @@ class AuthForm extends StatelessWidget {
                 ),
                 validator: (value) {
                   if (isRegister && (value == null || value.isEmpty)) {
-                    return 'Please enter your name';
+                    return AppLocalizations.of(context)!.enter_your_name_label;
                   }
                   return null;
                 },
@@ -48,7 +49,7 @@ class AuthForm extends StatelessWidget {
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                labelText: 'Email',
+                labelText: AppLocalizations.of(context)!.email_label,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -56,11 +57,11 @@ class AuthForm extends StatelessWidget {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return AppLocalizations.of(context)!.enter_your_email_label;
                 }
                 final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                 if (!emailRegex.hasMatch(value)) {
-                  return 'Please enter a valid email';
+                  return AppLocalizations.of(context)!.enter_valid_email;
                 }
                 return null;
               },
@@ -70,7 +71,7 @@ class AuthForm extends StatelessWidget {
             controller: passwordController,
             obscureText: true,
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: AppLocalizations.of(context)!.password_label,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -78,10 +79,10 @@ class AuthForm extends StatelessWidget {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your password';
+                return AppLocalizations.of(context)!.enter_your_password;
               }
               if (isRegister && value.length < 8) {
-                return 'Password must be at least 8 characters';
+                return AppLocalizations.of(context)!.enter_valid_password;
               }
               return null;
             },

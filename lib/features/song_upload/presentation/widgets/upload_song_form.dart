@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/song_upload_bloc.dart';
 
@@ -53,16 +54,16 @@ class _UploadSongFormState extends State<UploadSongForm> {
       listener: (context, state) {
         if (state is SongUploadSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Song "${state.song.title}" uploaded successfully')),
+            SnackBar(content: Text('${AppLocalizations.of(context)!.song_label} "${state.song.title}" ${AppLocalizations.of(context)!.uploaded_successfully_label}')),
           );
 
 
           Navigator.of(context).pushReplacementNamed('/home');
         } else if (state is SongUploadFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Upload failed: ${state.message}')),
+            SnackBar(content: Text('${AppLocalizations.of(context)!.upload_failed_label}: ${state.message}')),
           );
-          Navigator.of(context).pushReplacementNamed('songs');
+          Navigator.of(context).pushReplacementNamed('/songs');
 
         }
       },
@@ -99,19 +100,19 @@ class _UploadSongFormState extends State<UploadSongForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Select MP3 File',
+              AppLocalizations.of(context)!.select_mp3_file_label,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             if (fileName != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: Text('Selected file: $fileName'),
+                child: Text('${AppLocalizations.of(context)!.selected_file_label}: $fileName'),
               ),
             ElevatedButton.icon(
               onPressed: state is SongUploading ? null : _selectAudioFile,
               icon: const Icon(Icons.audio_file),
-              label: const Text('Browse Files'),
+              label: Text(AppLocalizations.of(context)!.browse_files_label),
             ),
           ],
         ),
@@ -129,14 +130,14 @@ class _UploadSongFormState extends State<UploadSongForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Song Details',
+              AppLocalizations.of(context)!.song_details_label,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.title_label,
                 border: OutlineInputBorder(),
               ),
               onChanged: (_) => _updateSongInfo(),
@@ -145,8 +146,8 @@ class _UploadSongFormState extends State<UploadSongForm> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _artistController,
-              decoration: const InputDecoration(
-                labelText: 'Artist',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.artist_label,
                 border: OutlineInputBorder(),
               ),
               onChanged: (_) => _updateSongInfo(),
@@ -155,8 +156,8 @@ class _UploadSongFormState extends State<UploadSongForm> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _artworkUrlController,
-              decoration: const InputDecoration(
-                labelText: 'Artwork URL',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.artwork_url_label,
                 border: OutlineInputBorder(),
                 hintText: 'https://example.com/artwork.jpg',
               ),
@@ -169,7 +170,7 @@ class _UploadSongFormState extends State<UploadSongForm> {
                 context.read<SongUploadBloc>().add(UploadSong());
               },
               child: isLoading
-                  ? const Row(
+                  ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
@@ -178,10 +179,10 @@ class _UploadSongFormState extends State<UploadSongForm> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                   SizedBox(width: 12),
-                  Text('Uploading...'),
+                  Text(AppLocalizations.of(context)!.uploading_label),
                 ],
               )
-                  : const Text('Upload Song'),
+                  : Text(AppLocalizations.of(context)!.upload_song_label),
             ),
           ],
         ),

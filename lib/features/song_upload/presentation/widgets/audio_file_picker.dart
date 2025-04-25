@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AudioFilePicker extends StatelessWidget {
   final String? fileName;
@@ -21,19 +22,19 @@ class AudioFilePicker extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Select MP3 File',
+              AppLocalizations.of(context)!.select_mp3_file_label,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             if (fileName != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: Text('Selected file: $fileName'),
+                child: Text('${AppLocalizations.of(context)!.selected_file_label}: $fileName'),
               ),
             ElevatedButton.icon(
               onPressed: isLoading ? null : onPickFile,
               icon: const Icon(Icons.audio_file),
-              label: const Text('Browse Files'),
+              label: Text(AppLocalizations.of(context)!.browse_files_label),
             ),
           ],
         ),

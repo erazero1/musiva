@@ -35,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
+    Future.delayed(Duration(seconds: 2));
     final currentUser = await getCurrentUser(NoParams());
 
     currentUser.fold(

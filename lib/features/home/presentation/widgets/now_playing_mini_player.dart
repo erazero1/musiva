@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NowPlayingMiniPlayer extends StatelessWidget {
   const NowPlayingMiniPlayer({super.key});
@@ -45,7 +46,7 @@ class NowPlayingMiniPlayer extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Song Title',
+                    AppLocalizations.of(context)!.song_title_label,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -54,7 +55,7 @@ class NowPlayingMiniPlayer extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Artist Name',
+                    AppLocalizations.of(context)!.artist_name_label,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Colors.grey[600],
                     ),

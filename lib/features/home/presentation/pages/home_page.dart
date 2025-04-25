@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiva/features/profile/presentation/pages/profile_page.dart';
-import 'package:musiva/features/song_upload/presentation/bloc/song_upload_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:musiva/features/song_upload/presentation/pages/upload_page.dart';
 import '../../../library/presentation/pages/library_page.dart';
 import '../../../songs/presentation/pages/songs_page.dart';
@@ -33,7 +34,7 @@ class HomePageContent extends StatelessWidget {
             child: Column(
               children: [
                 // Custom App Bar
-                MusivaAppBar(title: _getTitle(state.currentIndex)),
+                MusivaAppBar(title: _getTitle(state.currentIndex, context)),
 
                 // Main content area
                 Expanded(
@@ -50,22 +51,22 @@ class HomePageContent extends StatelessWidget {
             onTap: (index) {
               context.read<NavigationBloc>().add(NavigationTabChanged(index));
             },
-            items: const [
+            items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.music_note),
-                label: 'Songs',
+                label: AppLocalizations.of(context)!.songs_label,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.library_music),
-                label: 'Library',
+                label: AppLocalizations.of(context)!.library_label,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.cloud_upload),
-                label: 'Upload',
+                label: AppLocalizations.of(context)!.upload_label,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: "Profile",
+                label: AppLocalizations.of(context)!.profile_label,
               ),
             ],
             selectedItemColor: Theme.of(context).primaryColor,
@@ -76,18 +77,18 @@ class HomePageContent extends StatelessWidget {
     );
   }
 
-  String _getTitle(int index) {
+  String _getTitle(int index, BuildContext context) {
     switch (index) {
       case 0:
-        return 'Songs';
+        return AppLocalizations.of(context)!.songs_label;
       case 1:
-        return 'Library';
+        return AppLocalizations.of(context)!.library_label;
       case 2:
-        return 'Upload';
+        return AppLocalizations.of(context)!.upload_label;
       case 3:
-        return 'Profile';
+        return AppLocalizations.of(context)!.profile_label;
       default:
-        return 'Musiva';
+        return AppLocalizations.of(context)!.app_name;
     }
   }
 

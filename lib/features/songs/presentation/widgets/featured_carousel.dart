@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/song.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeaturedCarousel extends StatefulWidget {
   final List<Song> items;
@@ -131,12 +132,12 @@ class _FeaturedCarouselState extends State<FeaturedCarousel> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                 ),
-                                child: const Row(
+                                child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.play_arrow, size: 18),
                                     SizedBox(width: 4),
-                                    Text('Play Now'),
+                                    Text(AppLocalizations.of(context)!.play_now_label),
                                   ],
                                 ),
                               ),

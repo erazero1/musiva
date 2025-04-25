@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:musiva/core/usecases/usecase.dart';
 import 'package:musiva/features/auth/domain/usecases/get_current_user.dart';
 import 'package:musiva/features/auth/domain/usecases/logout.dart';
@@ -35,7 +36,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       await logoutUseCase.call(NoParams());
     } catch (e) {
-      // TODO: Handle errors
+      debugPrint("Something went wrong: $e");
     }
   }
 }

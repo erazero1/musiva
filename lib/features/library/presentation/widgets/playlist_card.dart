@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaylistCard extends StatelessWidget {
   final String? imageUrl;
@@ -57,7 +58,7 @@ class PlaylistCard extends StatelessWidget {
               const SizedBox(height: 16),
               // Create playlist text
               Text(
-                'Create Playlist',
+                AppLocalizations.of(context)!.create_playlist_label,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
@@ -116,7 +117,7 @@ class PlaylistCard extends StatelessWidget {
               const SizedBox(height: 4),
               // Song count
               Text(
-                '$songCount songs',
+                '$songCount ${AppLocalizations.of(context)!.songs_label}',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: Colors.grey[600],
                 ),

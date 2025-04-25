@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as path;
 import 'package:cloudinary_public/cloudinary_public.dart';
@@ -9,7 +8,8 @@ class CloudinaryDataSource {
 
   CloudinaryDataSource(this.cloudinary);
 
-  Future<Map<String, dynamic>> uploadMusicFile(String filePath, Map<String, dynamic> songInfo) async {
+  Future<Map<String, dynamic>> uploadMusicFile(String filePath,
+      Map<String, dynamic> songInfo) async {
     final String id = const Uuid().v4();
     final String folder = 'songs/$id';
 

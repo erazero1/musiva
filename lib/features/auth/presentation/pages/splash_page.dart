@@ -42,7 +42,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
     // Check auth status after a short delay
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 3), () {
         if (mounted) {
           context.read<AuthBloc>().add(CheckAuthStatusEvent());
         }

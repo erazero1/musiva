@@ -24,11 +24,13 @@ import '../../features/songs/domain/repositories/songs_repository.dart';
 import '../../features/songs/presentation/bloc/songs_bloc.dart';
 import '../constants/env.dart';
 import '../network/network_info.dart';
+import '../theme/bloc/theme_bloc.dart';
 
 final sl = GetIt.instance;
 
-void setupDependencies() async {
-  initAuthDependencies();
+Future<void> setupDependencies() async {
+  await initAuthDependencies();
+  sl.registerFactory(() => ThemeBloc());
   sl.registerFactory(
     () => SongsBloc(
       songsRepository: sl<SongsRepository>(),
@@ -70,13 +72,36 @@ void setupDependencies() async {
 }
 
 Future<void> initAuthDependencies() async {
-  // BLoC
-  sl.registerFactory(
-    () => AuthBloc(
-      getCurrentUser: sl(),
-      login: sl(),
-      register: sl(),
-      logout: sl(),
+  // External
+  sl.registerLazySingleton(() => FirebaseAuth.instance);
+  sl.registerLazySingleton(() => InternetConnectionChecker.instance);
+
+  // Register SharedPreferences singleton early
+  if (!sl.isRegistered<SharedPreferences>()) {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sl.registerLazySingleton(() => sharedPreferences);
+  }
+
+  // Core
+  sl.registerLazySingleton<NetworkInfo>(
+        () => NetworkInfoImpl(sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+        () => AuthRemoteDataSourceImpl(firebaseAuth: sl()),
+  );
+
+  sl.registerLazySingleton<AuthLocalDataSource>(
+        () => AuthLocalDataSourceImpl(sharedPreferences: sl()),
+  );
+
+  // Repository
+  sl.registerLazySingleton<AuthRepository>(
+        () => AuthRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
     ),
   );
 
@@ -86,36 +111,13 @@ Future<void> initAuthDependencies() async {
   sl.registerLazySingleton(() => Register(sl()));
   sl.registerLazySingleton(() => Logout(sl()));
 
-  // Repository
-  sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
-      remoteDataSource: sl(),
-      localDataSource: sl(),
-      networkInfo: sl(),
+  // BLoC
+  sl.registerFactory(
+        () => AuthBloc(
+      getCurrentUser: sl(),
+      login: sl(),
+      register: sl(),
+      logout: sl(),
     ),
   );
-
-  // Data sources
-  sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(firebaseAuth: sl()),
-  );
-
-  sl.registerLazySingleton<AuthLocalDataSource>(
-    () => AuthLocalDataSourceImpl(sharedPreferences: sl()),
-  );
-
-  // Core
-  sl.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(sl()),
-  );
-
-  // External
-  sl.registerLazySingleton(() => FirebaseAuth.instance);
-  sl.registerLazySingleton(() => InternetConnectionChecker.instance);
-
-  // Register SharedPreferences singleton if not already registered
-  if (!sl.isRegistered<SharedPreferences>()) {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sl.registerLazySingleton(() => sharedPreferences);
-  }
 }

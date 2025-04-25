@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/auth_bloc.dart';
 import '../widgets/auth_button.dart';
@@ -94,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                     children: [
                       const SizedBox(height: 20),
                       Text(
-                        'Create Account',
+                        AppLocalizations.of(context)!.create_account_label,
                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor,
@@ -102,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Join Musiva to discover and enjoy your favorite music',
+                        AppLocalizations.of(context)!.join_musiva_label,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -127,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                               ),
                               const SizedBox(height: 30),
                               AuthButton(
-                                text: 'Register',
+                                text: AppLocalizations.of(context)!.register_label,
                                 onPressed: _register,
                                 isLoading: state is AuthLoading,
                               ),
@@ -139,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Already have an account?'),
+                          Text(AppLocalizations.of(context)!.already_have_account_label),
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);

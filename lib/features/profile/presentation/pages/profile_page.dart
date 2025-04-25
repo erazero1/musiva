@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../auth/domain/entities/user.dart';
 import '../bloc/profile_bloc.dart';
@@ -14,7 +15,7 @@ class ProfilePage extends StatelessWidget {
       create: (context) => GetIt.instance<ProfileBloc>()..add(LoadProfileEvent()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          title: Text( AppLocalizations.of(context)!.profile_label),
           backgroundColor: Theme.of(context).primaryColor,
         ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -28,13 +29,13 @@ class ProfilePage extends StatelessWidget {
             } else if (state is ProfileError) {
               return Center(
                 child: Text(
-                  'Error: ${state.message}',
+                  '${ AppLocalizations.of(context)!.error_label}: ${state.message}',
                   style: const TextStyle(color: Colors.red),
                 ),
               );
             }
-            return const Center(
-              child: Text('Loading Profile...'),
+            return Center(
+              child: Text( AppLocalizations.of(context)!.loading_profile_label),
             );
           },
         ),
@@ -45,8 +46,7 @@ class ProfilePage extends StatelessWidget {
   Widget _buildProfileContent(BuildContext context, User user) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: ListView(
         children: [
           const SizedBox(height: 20),
           _buildProfileAvatar(user),
@@ -66,11 +66,11 @@ class ProfilePage extends StatelessWidget {
               color: Colors.grey[600],
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
           _buildProfileItem(
             context,
             icon: Icons.person,
-            title: 'Edit Profile',
+            title:  AppLocalizations.of(context)!.edit_profile_label,
             onTap: () {
               // TODO: Navigate to edit profile screen
             },
@@ -78,7 +78,7 @@ class ProfilePage extends StatelessWidget {
           _buildProfileItem(
             context,
             icon: Icons.settings,
-            title: 'Settings',
+            title:  AppLocalizations.of(context)!.settings_label,
             onTap: () {
               // TODO: Navigate to settings screen
             },
@@ -86,7 +86,7 @@ class ProfilePage extends StatelessWidget {
           _buildProfileItem(
             context,
             icon: Icons.help_outline,
-            title: 'Help & Support',
+            title:  AppLocalizations.of(context)!.help_support_label,
             onTap: () {
               // TODO: Navigate to help screen
             },
@@ -101,8 +101,8 @@ class ProfilePage extends StatelessWidget {
               backgroundColor: Colors.red,
               minimumSize: const Size(double.infinity, 50),
             ),
-            child: const Text(
-              'Logout',
+            child: Text(
+              AppLocalizations.of(context)!.logout_label,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,

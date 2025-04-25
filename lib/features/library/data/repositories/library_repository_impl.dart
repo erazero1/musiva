@@ -5,7 +5,6 @@ import '../../../songs/domain/entities/song.dart';
 class LibraryRepositoryImpl implements LibraryRepository {
   @override
   Future<List<Song>> getRecentSongs() async {
-    await Future.delayed(const Duration(seconds: 1));
 
     // TODO: Implement fetch from network func
     return List.generate(
@@ -25,7 +24,6 @@ class LibraryRepositoryImpl implements LibraryRepository {
 
   @override
   Future<List<Playlist>> getPlaylists() async {
-    await Future.delayed(const Duration(seconds: 1));
 
     // TODO: Implement fetch from network func
     return List.generate(
@@ -42,7 +40,6 @@ class LibraryRepositoryImpl implements LibraryRepository {
 
   @override
   Future<List<Song>> getFavoriteSongs() async {
-    await Future.delayed(const Duration(seconds: 1));
 
     // TODO: Implement fetch from network func
     return List.generate(
@@ -62,7 +59,6 @@ class LibraryRepositoryImpl implements LibraryRepository {
 
   @override
   Future<List<Song>> getDownloadedSongs() async {
-    await Future.delayed(const Duration(seconds: 1));
     // TODO: Implement fetch from network func
     return List.generate(
       7,

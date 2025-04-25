@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/auth_bloc.dart';
 import '../widgets/auth_button.dart';
@@ -93,19 +94,19 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(height: 30),
-                          const Center(
+                          Center(
                             child: Column(
                               children: [
                                 Text(
-                                  'Musiva',
-                                  style: TextStyle(
+                                  AppLocalizations.of(context)!.app_name,
+                                  style: const TextStyle(
                                     fontSize: 38,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(height: 8),
-                                Text(
+                                const SizedBox(height: 8),
+                                const Text(
                                   'Your Music, Your Way',
                                   style: TextStyle(
                                     fontSize: 16,
@@ -126,8 +127,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  const Text(
-                                    'Login',
+                                  Text(
+                                    AppLocalizations.of(context)!.login_label,
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                   ),
                                   const SizedBox(height: 30),
                                   AuthButton(
-                                    text: 'Login',
+                                    text: AppLocalizations.of(context)!.login_label,
                                     onPressed: _login,
                                     isLoading: state is AuthLoading,
                                   ),
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text("Don't have an account?"),
+                              Text(AppLocalizations.of(context)!.dont_have_account_label),
                               TextButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -163,7 +164,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     ),
                                   );
                                 },
-                                child: const Text('Register'),
+                                child: Text(AppLocalizations.of(context)!.register_label),
                               ),
                             ],
                           ),

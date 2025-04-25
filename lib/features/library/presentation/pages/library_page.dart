@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/library_bloc.dart';
 import '../widgets/album_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../widgets/library_section_header.dart';
 import '../widgets/playlist_card.dart';
 
@@ -31,13 +33,13 @@ class LibraryPageContent extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Failed to load library'),
+                Text(AppLocalizations.of(context)!.failed_to_load_library_label),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     context.read<LibraryBloc>().add(const FetchLibrary());
                   },
-                  child: const Text('Retry'),
+                  child: Text(AppLocalizations.of(context)!.retry_label),
                 ),
               ],
             ),
@@ -54,7 +56,7 @@ class LibraryPageContent extends StatelessWidget {
               // Recently played
               SliverToBoxAdapter(
                 child: LibrarySectionHeader(
-                  title: 'Recently Played',
+                  title: AppLocalizations.of(context)!.recently_played_label,
                   onViewAll: () {
                     // TODO: Navigate to all recently played
                   },
@@ -84,7 +86,7 @@ class LibraryPageContent extends StatelessWidget {
 
               SliverToBoxAdapter(
                 child: LibrarySectionHeader(
-                  title: 'Your Playlists',
+                  title: AppLocalizations.of(context)!.your_playlists_label,
                   onViewAll: () {
                     // TODO: Navigate to all playlists
                   },
@@ -126,7 +128,7 @@ class LibraryPageContent extends StatelessWidget {
               // Favorites
               SliverToBoxAdapter(
                 child: LibrarySectionHeader(
-                  title: 'Favorites',
+                  title: AppLocalizations.of(context)!.favorites_label,
                   onViewAll: () {
                     // TODO: Navigate to all favorites
                   },
@@ -168,7 +170,7 @@ class LibraryPageContent extends StatelessWidget {
               // Downloads
               SliverToBoxAdapter(
                 child: LibrarySectionHeader(
-                  title: 'Downloads',
+                  title: AppLocalizations.of(context)!.downloads_label,
                   onViewAll: () {
                     // TODO: Navigate to all downloads
                   },

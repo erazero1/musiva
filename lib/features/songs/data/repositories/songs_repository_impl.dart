@@ -44,7 +44,6 @@ class SongsRepositoryImpl implements SongsRepository {
   @override
   Future<List<Song>> getFeaturedSongs() async {
     // TODO: Implement fetch from network func
-    await Future.delayed(const Duration(seconds: 1));
 
     return List.generate(
       5,
