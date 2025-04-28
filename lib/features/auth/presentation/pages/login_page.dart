@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../bloc/auth_bloc.dart';
 import '../widgets/auth_button.dart';
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is Authenticated) {
+          if (state is Authenticated || state is GuestAuthenticated) {
             Navigator.pushReplacementNamed(context, '/home');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -146,6 +147,49 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                     onPressed: _login,
                                     isLoading: state is AuthLoading,
                                   ),
+                                  const SizedBox(height: 20),
+
+                                  AuthButton(
+                                    text: AppLocalizations.of(context)!.continue_as_guest ,
+                                    onPressed: () {
+                                      context.read<AuthBloc>().add(SignInAnonymouslyEvent());
+                                    },
+                                    isLoading: state is AuthLoading,
+                                    color: Colors.grey,
+                                  ),
+
+                                  const SizedBox(height: 10),
+
+                                  ElevatedButton.icon(
+                                    onPressed: state is AuthLoading
+                                        ? null
+                                        : () {
+                                      context.read<AuthBloc>().add(SignInWithGoogleEvent());
+                                    },
+                                    icon: SvgPicture.network(
+                                      'https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg',
+                                      height: 24,
+                                      width: 24,
+                                      placeholderBuilder: (context) => const CircularProgressIndicator(strokeWidth: 1),
+                                    ),
+                                    label: Text(
+                                      AppLocalizations.of(context)!.sing_in_with_google,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.black,
+                                      minimumSize: const Size(double.infinity, 50),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        side: const BorderSide(color: Colors.black12),
+                                      ),
+                                    ),
+                                  ),
+
                                 ],
                               ),
                             ),

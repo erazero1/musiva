@@ -4,6 +4,7 @@ import 'package:musiva/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:musiva/features/song_upload/presentation/pages/upload_page.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../library/presentation/pages/library_page.dart';
 import '../../../songs/presentation/pages/songs_page.dart';
 import '../bloc/navigation_bloc.dart';
@@ -27,19 +28,26 @@ class HomePageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authState = context.watch<AuthBloc>().state;
+    final isGuest = authState is GuestAuthenticated;
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
+        final tabs = _getTabs(context, isGuest);
+        final pages = _getPages(isGuest);
+
+        final currentIndex = state.currentIndex.clamp(0, tabs.length - 1);
         return Scaffold(
           body: SafeArea(
             child: Column(
               children: [
                 // Custom App Bar
-                MusivaAppBar(title: _getTitle(state.currentIndex, context)),
+                MusivaAppBar(
+                  title: tabs[currentIndex].label ??
+                      AppLocalizations.of(context)!.app_name,
+                ),
 
                 // Main content area
-                Expanded(
-                  child: _buildPage(state.currentIndex),
-                ),
+                Expanded(child: pages[currentIndex]),
 
                 // Mini Player at the bottom
                 const NowPlayingMiniPlayer(),
@@ -47,28 +55,11 @@ class HomePageContent extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: state.currentIndex,
+            currentIndex: currentIndex,
             onTap: (index) {
               context.read<NavigationBloc>().add(NavigationTabChanged(index));
             },
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.music_note),
-                label: AppLocalizations.of(context)!.songs_label,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.library_music),
-                label: AppLocalizations.of(context)!.library_label,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.cloud_upload),
-                label: AppLocalizations.of(context)!.upload_label,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: AppLocalizations.of(context)!.profile_label,
-              ),
-            ],
+            items: tabs,
             selectedItemColor: Theme.of(context).primaryColor,
             elevation: 8.0,
           ),
@@ -92,18 +83,36 @@ class HomePageContent extends StatelessWidget {
     }
   }
 
-  Widget _buildPage(int index) {
-    switch (index) {
-      case 0:
-        return SongsPage();
-      case 1:
-        return const LibraryPage();
-      case 2:
-        return UploadSongPage();
-      case 3:
-        return const ProfilePage();
-      default:
-        return SongsPage();
-    }
+  List<BottomNavigationBarItem> _getTabs(BuildContext context, bool isGuest) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.music_note),
+        label: l10n.songs_label,
+      ),
+      if (!isGuest)
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.library_music),
+          label: l10n.library_label,
+        ),
+      if (!isGuest)
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.cloud_upload),
+          label: l10n.upload_label,
+        ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.person),
+        label: l10n.profile_label,
+      ),
+    ];
+  }
+
+  List<Widget> _getPages(bool isGuest) {
+    return [
+      SongsPage(),
+      if (!isGuest) const LibraryPage(),
+      if (!isGuest) UploadSongPage(),
+      const ProfilePage(),
+    ];
   }
 }

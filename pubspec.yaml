@@ -31,6 +31,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  google_sign_in: ^6.3.0
+  flutter_svg: ^2.1.0
 
 dev_dependencies:
   flutter_test:

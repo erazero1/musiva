@@ -12,13 +12,15 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {
-  final User user;
+  final domain.User user;
 
   const Authenticated(this.user);
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [user];
 }
+
+class GuestAuthenticated extends AuthState {}
 
 class Unauthenticated extends AuthState {}
 
@@ -28,5 +30,5 @@ class AuthError extends AuthState {
   const AuthError(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

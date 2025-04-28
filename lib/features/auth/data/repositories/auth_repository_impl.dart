@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -12,11 +14,15 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final AuthLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
+  final fb_auth.FirebaseAuth firebaseAuth;
+  final GoogleSignIn googleSignIn;
 
   AuthRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.networkInfo,
+    required this.firebaseAuth,
+    required this.googleSignIn
   });
 
   @override
@@ -72,12 +78,49 @@ class AuthRepositoryImpl implements AuthRepository {
       try {
         await remoteDataSource.logout();
         await localDataSource.clearCachedUser();
+        await firebaseAuth.signOut();
+        await googleSignIn.signOut();
         return const Right(null);
       } on ServerException catch (e) {
         return Left(ServerFailure(message: e.message));
       }
     } else {
       return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  bool isGuest() {
+    final user = firebaseAuth.currentUser;
+    return user != null && user.isAnonymous;
+  }
+
+  @override
+  Future<bool> signInAnonymously() async{
+    try {
+      await firebaseAuth.signInAnonymously();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> signInWithGoogle() async {
+    try {
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return false;
+      final googleAuth = await googleUser.authentication;
+
+      final credential = fb_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await firebaseAuth.signInWithCredential(credential);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

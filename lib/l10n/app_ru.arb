@@ -59,5 +59,10 @@
   "share_label": "Поделиться",
   "download_label": "Скачать",
   "song_title_label": "Название песни",
-  "artist_name_label": "Имя исполнителя"
+  "artist_name_label": "Имя исполнителя",
+  "continue_as_guest": "Продолжить как гость",
+  "sing_in_with_google": "Войти с помощью Google",
+  "guest_mode_warning": "Гостевой режим. Ограниченный доступ"
+
+
 }

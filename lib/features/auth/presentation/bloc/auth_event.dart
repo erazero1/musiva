@@ -35,3 +35,9 @@ class RegisterEvent extends AuthEvent {
 }
 
 class LogoutEvent extends AuthEvent {}
+
+class SignInAnonymouslyEvent extends AuthEvent {}
+
+class SignInWithGoogleEvent extends AuthEvent {}
+
+class CheckGuestModeEvent extends AuthEvent {}

@@ -59,5 +59,10 @@
   "share_label": "Бөлісу",
   "download_label": "Жүктеп алу",
   "song_title_label": "Ән атауы",
-  "artist_name_label": "Орындаушының аты"
+  "artist_name_label": "Орындаушының аты",
+  "continue_as_guest": "Қонақ ретінде жалғастыру",
+  "sing_in_with_google": "Google жүйесімен кіру",
+  "guest_mode_warning": "Қонақ режімі. Қол жетімділік шектеулі"
+
+
 }

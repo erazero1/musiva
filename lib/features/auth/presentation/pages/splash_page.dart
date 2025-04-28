@@ -42,7 +42,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
     // Check auth status after a short delay
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(Duration(seconds: 1), () {
         if (mounted) {
           context.read<AuthBloc>().add(CheckAuthStatusEvent());
         }
@@ -61,7 +61,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is Authenticated) {
+        if (state is Authenticated || state is GuestAuthenticated) {
           Navigator.pushReplacementNamed(context, '/home');
         } else if (state is Unauthenticated) {
           Navigator.pushReplacement(

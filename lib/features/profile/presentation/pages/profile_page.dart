@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../auth/domain/entities/user.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/presentation/pages/login_page.dart';
 import '../bloc/profile_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,11 +13,14 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authState = context.watch<AuthBloc>().state;
+    final isGuest = authState is GuestAuthenticated;
     return BlocProvider(
-      create: (context) => GetIt.instance<ProfileBloc>()..add(LoadProfileEvent()),
+      create: (context) =>
+          GetIt.instance<ProfileBloc>()..add(LoadProfileEvent()),
       child: Scaffold(
         appBar: AppBar(
-          title: Text( AppLocalizations.of(context)!.profile_label),
+          title: Text(AppLocalizations.of(context)!.profile_label),
           backgroundColor: Theme.of(context).primaryColor,
         ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -25,17 +30,17 @@ class ProfilePage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else if (state is ProfileLoaded) {
-              return _buildProfileContent(context, state.user);
+              return _buildProfileContent(context, state.user, isGuest);
             } else if (state is ProfileError) {
               return Center(
                 child: Text(
-                  '${ AppLocalizations.of(context)!.error_label}: ${state.message}',
+                  '${AppLocalizations.of(context)!.error_label}: ${state.message}',
                   style: const TextStyle(color: Colors.red),
                 ),
               );
             }
             return Center(
-              child: Text( AppLocalizations.of(context)!.loading_profile_label),
+              child: Text(AppLocalizations.of(context)!.loading_profile_label),
             );
           },
         ),
@@ -43,7 +48,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileContent(BuildContext context, User user) {
+  Widget _buildProfileContent(BuildContext context, User user, bool isGuest) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -52,7 +57,7 @@ class ProfilePage extends StatelessWidget {
           _buildProfileAvatar(user),
           const SizedBox(height: 24),
           Text(
-            user.displayName ?? 'Music Lover',
+            user.displayName ?? 'Guest',
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -67,35 +72,43 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40),
-          _buildProfileItem(
-            context,
-            icon: Icons.person,
-            title:  AppLocalizations.of(context)!.edit_profile_label,
-            onTap: () {
-              // TODO: Navigate to edit profile screen
-            },
-          ),
-          _buildProfileItem(
-            context,
-            icon: Icons.settings,
-            title:  AppLocalizations.of(context)!.settings_label,
-            onTap: () {
-              // TODO: Navigate to settings screen
-            },
-          ),
-          _buildProfileItem(
-            context,
-            icon: Icons.help_outline,
-            title:  AppLocalizations.of(context)!.help_support_label,
-            onTap: () {
-              // TODO: Navigate to help screen
-            },
-          ),
+          if (!isGuest)
+            _buildProfileItem(
+              context,
+              icon: Icons.person,
+              title: AppLocalizations.of(context)!.edit_profile_label,
+              onTap: () {
+                // TODO: Navigate to edit profile screen
+              },
+            ),
+          if (!isGuest)
+            _buildProfileItem(
+              context,
+              icon: Icons.settings,
+              title: AppLocalizations.of(context)!.settings_label,
+              onTap: () {
+                Navigator.of(context).pushNamed('/settings');
+              },
+            ),
+          if (!isGuest)
+            _buildProfileItem(
+              context,
+              icon: Icons.help_outline,
+              title: AppLocalizations.of(context)!.help_support_label,
+              onTap: () {
+                // TODO: Navigate to help screen
+              },
+            ),
           const SizedBox(height: 40),
           ElevatedButton(
             onPressed: () {
               context.read<ProfileBloc>().logout();
-              Navigator.of(context).pushReplacementNamed('/');
+              context.read<AuthBloc>().add(LogoutEvent());
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (route) => false,
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -127,33 +140,33 @@ class ProfilePage extends StatelessWidget {
       ),
       child: user.photoUrl != null
           ? ClipRRect(
-        borderRadius: BorderRadius.circular(60),
-        child: Image.network(
-          user.photoUrl!,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return const Icon(
+              borderRadius: BorderRadius.circular(60),
+              child: Image.network(
+                user.photoUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.person,
+                    size: 60,
+                    color: Colors.grey,
+                  );
+                },
+              ),
+            )
+          : const Icon(
               Icons.person,
               size: 60,
               color: Colors.grey,
-            );
-          },
-        ),
-      )
-          : const Icon(
-        Icons.person,
-        size: 60,
-        color: Colors.grey,
-      ),
+            ),
     );
   }
 
   Widget _buildProfileItem(
-      BuildContext context, {
-        required IconData icon,
-        required String title,
-        required VoidCallback onTap,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       child: Padding(
