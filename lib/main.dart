@@ -10,6 +10,7 @@ void main() async {
   await Firebase.initializeApp();
 
   await setupDependencies();
+  await initSettingsFeature();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight,]);
   runApp(MusivaApp());
 }

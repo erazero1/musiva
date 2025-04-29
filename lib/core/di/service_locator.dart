@@ -1,5 +1,6 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -17,6 +18,12 @@ import '../../features/auth/domain/usecases/register.dart';
 import '../../features/auth/domain/usecases/sign_in_anonymously_usecase.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/profile/presentation/bloc/profile_bloc.dart';
+import '../../features/settings/data/datasources/user_preferences_data_source.dart';
+import '../../features/settings/data/repositories/user_preferences_repository_impl.dart';
+import '../../features/settings/domain/repositories/user_preferences_repository.dart';
+import '../../features/settings/domain/usecases/get_user_preferences.dart';
+import '../../features/settings/domain/usecases/save_user_preferences.dart';
+import '../../features/settings/presentation/bloc/user_preferences_bloc.dart';
 import '../../features/song_upload/data/datasources/cloudinary_datasource.dart';
 import '../../features/song_upload/data/repositories/song_repository_impl.dart';
 import '../../features/song_upload/domain/repositories/song_repository.dart';
@@ -33,7 +40,7 @@ final sl = GetIt.instance;
 
 Future<void> setupDependencies() async {
   await initAuthDependencies();
-  sl.registerFactory(() => ThemeBloc());
+  sl.registerFactory(() => ThemeBloc(userPreferencesBloc: sl()));
   sl.registerFactory(
     () => SongsBloc(
       songsRepository: sl<SongsRepository>(),
@@ -72,6 +79,37 @@ Future<void> setupDependencies() async {
 
   // BLoCs
   sl.registerFactory(() => SongUploadBloc(sl()));
+}
+
+Future<void> initSettingsFeature() async {
+  // BLoC
+  sl.registerFactory(
+        () => UserPreferencesBloc(
+      getUserPreferences: sl(),
+      saveUserPreferences: sl(),
+    ),
+  );
+
+
+  // Use cases
+  sl.registerLazySingleton(() => GetUserPreferences(sl()));
+  sl.registerLazySingleton(() => SaveUserPreferences(sl()));
+
+  // Repository
+  sl.registerLazySingleton<UserPreferencesRepository>(
+        () => UserPreferencesRepositoryImpl(dataSource: sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<UserPreferencesDataSource>(
+        () => FirebaseUserPreferencesDataSource(
+      firebaseAuth: sl(),
+      firebaseDatabase: sl(),
+    ),
+  );
+
+  // External
+  sl.registerLazySingleton(() => FirebaseDatabase.instance);
 }
 
 Future<void> initAuthDependencies() async {

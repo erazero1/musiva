@@ -62,7 +62,9 @@
   "artist_name_label": "Имя исполнителя",
   "continue_as_guest": "Продолжить как гость",
   "sing_in_with_google": "Войти с помощью Google",
-  "guest_mode_warning": "Гостевой режим. Ограниченный доступ"
+  "guest_mode_warning": "Гостевой режим. Ограниченный доступ",
+  "dark_theme_label": "Тёмная тема",
+  "light_theme_label":"Светлая тема"
 
 
 }

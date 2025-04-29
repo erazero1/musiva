@@ -62,5 +62,7 @@
   "artist_name_label": "Artist Name",
   "continue_as_guest": "Continue as guest",
   "sing_in_with_google": "Sign in with Google",
-  "guest_mode_warning": "Guest Mode: Limited Access"
+  "guest_mode_warning": "Guest Mode: Limited Access",
+  "dark_theme_label": "Dark theme",
+  "light_theme_label":"Light theme"
 }
