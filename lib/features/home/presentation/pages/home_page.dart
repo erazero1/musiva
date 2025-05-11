@@ -38,19 +38,88 @@ class HomePageContent extends StatelessWidget {
         final currentIndex = state.currentIndex.clamp(0, tabs.length - 1);
         return Scaffold(
           body: SafeArea(
-            child: Column(
+            child: Stack(
               children: [
-                // Custom App Bar
-                MusivaAppBar(
-                  title: tabs[currentIndex].label ??
-                      AppLocalizations.of(context)!.app_name,
+                // Enhanced background with oyular images
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.blue.shade900,
+                        Colors.blue.shade700,
+                        Colors.blue.shade500,
+                      ],
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      // Left Image (oyular_left.png) with animation
+                      Positioned(
+                        left: -30,
+                        top: 0,
+                        bottom: 0,
+                        child: Opacity(
+                          opacity: 0.4, // Reduced opacity for better content visibility
+                          child: Image.asset(
+                            'assets/oyular_left.png',
+                            height: MediaQuery.of(context).size.height,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      // Right Image (oyular_right.png) with animation
+                      Positioned(
+                        right: -30,
+                        top: 0,
+                        bottom: 0,
+                        child: Opacity(
+                          opacity: 0.4, // Reduced opacity for better content visibility
+                          child: Image.asset(
+                            'assets/oyular_right.png',
+                            height: MediaQuery.of(context).size.height,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                      // Dark overlay to improve content visibility
+                      Container(
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      // Subtle overlay pattern for texture
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            center: Alignment.center,
+                            radius: 1.0,
+                            colors: [
+                              Colors.white.withOpacity(0.0),
+                              Colors.white.withOpacity(0.05),
+                            ],
+                            stops: const [0.4, 1.0],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
-                // Main content area
-                Expanded(child: pages[currentIndex]),
+                Column(
+                  children: [
+                    // Custom App Bar
+                    MusivaAppBar(
+                      title: tabs[currentIndex].label ??
+                          AppLocalizations.of(context)!.app_name,
+                    ),
 
-                // Mini Player at the bottom
-                const NowPlayingMiniPlayer(),
+                    // Main content area
+                    Expanded(child: pages[currentIndex]),
+
+                    // Mini Player at the bottom
+                    const NowPlayingMiniPlayer(),
+                  ],
+                ),
               ],
             ),
           ),

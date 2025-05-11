@@ -67,13 +67,6 @@ class MusivaAppBar extends StatelessWidget {
 
               const Spacer(),
 
-              // Search icon
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  // TODO: Implement search func
-                },
-              ),
 
               // Settings icon
               IconButton(

@@ -6,7 +6,11 @@ class SongUploadInitial extends SongUploadState {}
 class AudioFileSelected extends SongUploadState {
   final String filePath;
   final String fileName;
-  AudioFileSelected(this.filePath, this.fileName);
+  final Map<String, dynamic> metadata;
+  
+  AudioFileSelected(this.filePath, this.fileName, [this.metadata = const {}]);
+  
+  bool get hasMetadata => metadata.isNotEmpty;
 }
 
 class SongInfoUpdated extends SongUploadState {

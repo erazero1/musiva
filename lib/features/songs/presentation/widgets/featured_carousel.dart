@@ -78,14 +78,19 @@ class _FeaturedCarouselState extends State<FeaturedCarousel> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                          color: Colors.black.withOpacity(0.4), // Stronger shadow
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                          spreadRadius: 2,
                         ),
                       ],
                       image: DecorationImage(
                         image: NetworkImage(song.artworkUrl),
                         fit: BoxFit.cover,
+                      ),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.2), // Subtle border
+                        width: 2,
                       ),
                     ),
                     child: Container(
@@ -96,8 +101,10 @@ class _FeaturedCarouselState extends State<FeaturedCarousel> {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withOpacity(0.5),
+                            Colors.black.withOpacity(0.8),
                           ],
+                          stops: const [0.4, 0.7, 1.0],
                         ),
                       ),
                       padding: const EdgeInsets.all(16),

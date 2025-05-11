@@ -5,6 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../../core/utils/logger.dart';
+import '../../../../core/utils/retry_helper.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
@@ -96,11 +98,23 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<bool> signInAnonymously() async{
+  Future<bool> signInAnonymously() async {
     try {
-      await firebaseAuth.signInAnonymously();
+      // Use retry mechanism for anonymous sign-in
+      await RetryHelper.retry(
+        operation: () => firebaseAuth.signInAnonymously(),
+        maxRetries: 3,
+        retryDelay: 1000,
+        // Only retry for network-related errors
+        retryIf: (e) => e is fb_auth.FirebaseAuthException && 
+                        e.code == 'network-request-failed',
+        onRetry: (exception, attempt, maxAttempts) {
+          log.w('AuthRepositoryImpl: Retrying anonymous sign-in (attempt $attempt/$maxAttempts) after network error');
+        },
+      );
       return true;
     } catch (e) {
+      log.e('AuthRepositoryImpl: Failed to sign in anonymously', e);
       return false;
     }
   }
@@ -108,18 +122,49 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<bool> signInWithGoogle() async {
     try {
-      final googleUser = await googleSignIn.signIn();
+      // Google sign-in process with retry mechanism
+      final googleUser = await RetryHelper.retry(
+        operation: () => googleSignIn.signIn(),
+        maxRetries: 3,
+        retryDelay: 1000,
+        onRetry: (exception, attempt, maxAttempts) {
+          log.w('AuthRepositoryImpl: Retrying Google sign-in (attempt $attempt/$maxAttempts) after error');
+        },
+      );
+      
       if (googleUser == null) return false;
-      final googleAuth = await googleUser.authentication;
+      
+      // Get authentication tokens with retry
+      final googleAuth = await RetryHelper.retry(
+        operation: () => googleUser.authentication,
+        maxRetries: 3,
+        retryDelay: 1000,
+        onRetry: (exception, attempt, maxAttempts) {
+          log.w('AuthRepositoryImpl: Retrying Google authentication (attempt $attempt/$maxAttempts) after error');
+        },
+      );
 
       final credential = fb_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      await firebaseAuth.signInWithCredential(credential);
+      // Sign in with credential with retry
+      await RetryHelper.retry(
+        operation: () => firebaseAuth.signInWithCredential(credential),
+        maxRetries: 3,
+        retryDelay: 1000,
+        // Only retry for network-related errors
+        retryIf: (e) => e is fb_auth.FirebaseAuthException && 
+                        e.code == 'network-request-failed',
+        onRetry: (exception, attempt, maxAttempts) {
+          log.w('AuthRepositoryImpl: Retrying Firebase credential sign-in (attempt $attempt/$maxAttempts) after error');
+        },
+      );
+      
       return true;
     } catch (e) {
+      log.e('AuthRepositoryImpl: Failed to sign in with Google', e);
       return false;
     }
   }
