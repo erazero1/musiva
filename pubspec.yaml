@@ -34,10 +34,6 @@ dependencies:
   google_sign_in: ^6.3.0
   flutter_svg: ^2.1.0
   firebase_database: ^11.3.5
-  firebase_storage: ^12.4.5
-  logger: ^2.5.0
-  metadata_god: ^1.0.0
-  audio_service: ^0.18.12
 
 dev_dependencies:
   flutter_test:
@@ -53,10 +49,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/placeholder_album.jpg
-    - assets/dombra.png
-    - assets/oyular_left.png
-    - assets/oyular_right.png
+     - assets/placeholder_album.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

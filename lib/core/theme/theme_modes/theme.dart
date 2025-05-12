@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 final themeData = ThemeData(
-  primaryColor: Colors.blue[800],
+  primaryColor: const Color(0xFF1DB954),
   // Spotify-like green
   colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color(0XFF1565C0),
+    seedColor: const Color(0xFF1DB954),
     brightness: Brightness.light,
   ),
   scaffoldBackgroundColor: Colors.white,
@@ -21,7 +21,7 @@ final themeData = ThemeData(
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
-    selectedItemColor: Color(0XFF1565C0),
+    selectedItemColor: Color(0xFF1DB954),
     unselectedItemColor: Colors.grey,
   ),
   textTheme: const TextTheme(

@@ -143,7 +143,7 @@ class ProfilePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(60),
               child: Image.network(
                 user.photoUrl!,
-                fit: BoxFit.scaleDown,
+                fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(
                     Icons.person,

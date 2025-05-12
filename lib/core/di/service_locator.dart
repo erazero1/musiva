@@ -5,9 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiva/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
-import 'package:musiva/features/song_upload/data/datasources/firebase_storage_datasource.dart';
-import 'package:musiva/features/songs/data/datasources/firebase_database_datasource.dart';
-import 'package:musiva/features/songs/data/repositories/firebase_songs_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/auth/data/datasources/auth_local_data_source.dart';
@@ -32,6 +29,7 @@ import '../../features/song_upload/data/repositories/song_repository_impl.dart';
 import '../../features/song_upload/domain/repositories/song_repository.dart';
 import '../../features/song_upload/domain/usecases/upload_song_usecase.dart';
 import '../../features/song_upload/presentation/bloc/song_upload_bloc.dart';
+import '../../features/songs/data/repositories/songs_repository_impl.dart';
 import '../../features/songs/domain/repositories/songs_repository.dart';
 import '../../features/songs/presentation/bloc/songs_bloc.dart';
 import '../constants/env.dart';
@@ -48,15 +46,12 @@ Future<void> setupDependencies() async {
       songsRepository: sl<SongsRepository>(),
     ),
   );
-  
-  // Firebase Database Data Source
-  sl.registerLazySingleton(
-    () => FirebaseDatabaseDataSource(),
-  );
-  
   // Repository
   sl.registerLazySingleton<SongsRepository>(
-    () => FirebaseSongsRepositoryImpl(sl()),
+    () => SongsRepositoryImpl(
+      clientId: Env.clientIdKey,
+      clientSecret: Env.clientSecretKey,
+    ),
   );
 
   sl.registerFactory(
@@ -74,7 +69,7 @@ Future<void> setupDependencies() async {
       ));
 
   // Data sources
-  sl.registerLazySingleton(() => FirebaseStorageDataSource());
+  sl.registerLazySingleton(() => CloudinaryDataSource(sl()));
 
   // Repositories
   sl.registerLazySingleton<SongRepository>(() => SongRepositoryImpl(sl()));

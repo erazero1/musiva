@@ -1,6 +1,6 @@
 part of 'songs_bloc.dart';
 
-enum SongsStatus { initial, loading, success, failure, loadingMore, searchLoading, searchSuccess, searchFailure }
+enum SongsStatus { initial, loading, success, failure }
 
 class SongsState extends Equatable {
   final SongsStatus status;
@@ -9,13 +9,6 @@ class SongsState extends Equatable {
   final List<Song> filteredSongs;
   final String selectedCategory;
   final String error;
-  final int currentPage;
-  final bool hasReachedMax;
-  final int totalSongs;
-  final String searchQuery;
-  final List<Song> searchResults;
-  final String sortBy;
-  final bool sortDescending;
 
   const SongsState({
     this.status = SongsStatus.initial,
@@ -24,13 +17,6 @@ class SongsState extends Equatable {
     this.filteredSongs = const [],
     this.selectedCategory = 'All',
     this.error = '',
-    this.currentPage = 1,
-    this.hasReachedMax = false,
-    this.totalSongs = 0,
-    this.searchQuery = '',
-    this.searchResults = const [],
-    this.sortBy = 'createdAt',
-    this.sortDescending = true,
   });
 
   SongsState copyWith({
@@ -40,13 +26,6 @@ class SongsState extends Equatable {
     List<Song>? filteredSongs,
     String? selectedCategory,
     String? error,
-    int? currentPage,
-    bool? hasReachedMax,
-    int? totalSongs,
-    String? searchQuery,
-    List<Song>? searchResults,
-    String? sortBy,
-    bool? sortDescending,
   }) {
     return SongsState(
       status: status ?? this.status,
@@ -55,30 +34,9 @@ class SongsState extends Equatable {
       filteredSongs: filteredSongs ?? this.filteredSongs,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       error: error ?? this.error,
-      currentPage: currentPage ?? this.currentPage,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      totalSongs: totalSongs ?? this.totalSongs,
-      searchQuery: searchQuery ?? this.searchQuery,
-      searchResults: searchResults ?? this.searchResults,
-      sortBy: sortBy ?? this.sortBy,
-      sortDescending: sortDescending ?? this.sortDescending,
     );
   }
 
   @override
-  List<Object> get props => [
-    status, 
-    songs, 
-    featuredSongs, 
-    filteredSongs, 
-    selectedCategory, 
-    error,
-    currentPage,
-    hasReachedMax,
-    totalSongs,
-    searchQuery,
-    searchResults,
-    sortBy,
-    sortDescending,
-  ];
+  List<Object> get props => [status, songs, featuredSongs, filteredSongs, selectedCategory, error];
 }

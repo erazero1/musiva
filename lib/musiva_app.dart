@@ -7,7 +7,6 @@ import 'package:musiva/core/theme/theme_modes/dark_theme.dart';
 import 'package:musiva/core/theme/theme_modes/theme.dart';
 import 'package:musiva/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:musiva/features/player/presentation/bloc/player_bloc.dart';
 import 'package:musiva/features/settings/presentation/bloc/user_preferences_bloc.dart';
 import 'core/di/service_locator.dart';
 import 'core/theme/bloc/theme_bloc.dart';
@@ -78,14 +77,6 @@ class _MusivaAppState extends State<MusivaApp> with WidgetsBindingObserver {
         BlocProvider<ThemeBloc>(
           create: (_) => sl<ThemeBloc>(),
           lazy: false, // Create immediately for theme initialization
-        ),
-        BlocProvider<PlayerBloc>(
-          create: (_) {
-            final bloc = PlayerBloc();
-            bloc.add(InitPlayer());
-            return bloc;
-          },
-          lazy: false, // Create immediately for player initialization
         ),
       ],
       child: BlocConsumer<UserPreferencesBloc, UserPreferencesState>(

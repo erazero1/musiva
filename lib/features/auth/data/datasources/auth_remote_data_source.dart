@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import '../../../../core/error/exceptions.dart';
-import '../../../../core/utils/logger.dart';
-import '../../../../core/utils/retry_helper.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -13,7 +11,6 @@ abstract class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final firebase_auth.FirebaseAuth firebaseAuth;
-  static const String _tag = 'AuthRemoteDataSource';
 
   AuthRemoteDataSourceImpl({required this.firebaseAuth});
 
@@ -30,20 +27,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> login(String email, String password) async {
     try {
-      // Use retry mechanism for login
-      final userCredential = await RetryHelper.retry(
-        operation: () => firebaseAuth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        ),
-        maxRetries: 3,
-        retryDelay: 1000,
-        // Only retry for network-related errors
-        retryIf: (e) => e is firebase_auth.FirebaseAuthException && 
-                        e.code == 'network-request-failed',
-        onRetry: (exception, attempt, maxAttempts) {
-          log.w('$_tag: Retrying login (attempt $attempt/$maxAttempts) after network error');
-        },
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
 
       if (userCredential.user != null) {
@@ -59,37 +45,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> register(String email, String password, String? displayName) async {
     try {
-      // Use retry mechanism for registration
-      final userCredential = await RetryHelper.retry(
-        operation: () => firebaseAuth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        ),
-        maxRetries: 3,
-        retryDelay: 1000,
-        // Only retry for network-related errors
-        retryIf: (e) => e is firebase_auth.FirebaseAuthException && 
-                        e.code == 'network-request-failed',
-        onRetry: (exception, attempt, maxAttempts) {
-          log.w('$_tag: Retrying registration (attempt $attempt/$maxAttempts) after network error');
-        },
+      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
 
       if (userCredential.user != null) {
         if (displayName != null) {
-          // Use retry for updating display name
-          await RetryHelper.retry(
-            operation: () async {
-              await userCredential.user!.updateDisplayName(displayName);
-              // Reload to get updated user info
-              await userCredential.user!.reload();
-            },
-            maxRetries: 2,
-            retryDelay: 1000,
-            onRetry: (exception, attempt, maxAttempts) {
-              log.w('$_tag: Retrying profile update (attempt $attempt/$maxAttempts) after error');
-            },
-          );
+          await userCredential.user!.updateDisplayName(displayName);
+          // Reload to get updated user info
+          await userCredential.user!.reload();
         }
 
         // Get fresh user data after update
@@ -110,15 +75,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     try {
-      // Use retry mechanism for logout
-      await RetryHelper.retry(
-        operation: () => firebaseAuth.signOut(),
-        maxRetries: 2,
-        retryDelay: 1000,
-        onRetry: (exception, attempt, maxAttempts) {
-          log.w('$_tag: Retrying logout (attempt $attempt/$maxAttempts) after error');
-        },
-      );
+      await firebaseAuth.signOut();
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw ServerException(message: e.message ?? 'Logout failed');
     }
